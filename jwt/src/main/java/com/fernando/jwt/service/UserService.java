@@ -6,6 +6,7 @@ import com.fernando.jwt.entity.Role;
 import com.fernando.jwt.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,14 +23,24 @@ public class UserService {
     public User registerNewUser(User user) {
 
         Role adminRole = new Role();
-        adminRole.setRoleName("Admin");
-        adminRole.setRoleDescription("Admin role");
+        adminRole.setRoleName("user");
+        adminRole.setRoleDescription("Default role");
 
         Set<Role> userRoles = new HashSet<>();
         userRoles.add(adminRole);
         user.setRole(userRoles);
 
         return userDao.save(user);
+    }
+
+    @GetMapping({"/forAdmin"})
+    public String forAdmin(){
+        return "This URL is only accessible to the admin";
+    }
+
+    @GetMapping({"/forUser"})
+    public String forUser(){
+        return "This URL is only accessible to the user";
     }
 
 
