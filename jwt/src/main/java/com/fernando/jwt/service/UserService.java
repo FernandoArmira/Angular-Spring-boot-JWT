@@ -5,8 +5,8 @@ import com.fernando.jwt.dao.UserDao;
 import com.fernando.jwt.entity.Role;
 import com.fernando.jwt.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -20,6 +20,9 @@ public class UserService {
     @Autowired
     private RoleDao roleDao;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public User registerNewUser(User user) {
 
         Role adminRole = new Role();
@@ -29,19 +32,15 @@ public class UserService {
         Set<Role> userRoles = new HashSet<>();
         userRoles.add(adminRole);
         user.setRole(userRoles);
+        user.setUserPassword(getEncodedPassword(user.getUserPassword()));
 
         return userDao.save(user);
     }
 
-    @GetMapping({"/forAdmin"})
-    public String forAdmin(){
-        return "This URL is only accessible to the admin";
+    public String getEncodedPassword(String password) {
+        return passwordEncoder.encode(password);
     }
 
-    @GetMapping({"/forUser"})
-    public String forUser(){
-        return "This URL is only accessible to the user";
-    }
 
 
 }
