@@ -12,7 +12,8 @@ const routes: Routes = [
   { path: 'admin', component: AdminComponent, canActivate:[AuthGuard],data:{roles:['admin']} },
   { path: 'user', component: UserComponent, canActivate:[AuthGuard],data:{roles:['user']} },
   { path: 'login', component: LoginComponent },
-  { path: 'forbidden', component: ForbiddenComponent }
+  { path: 'forbidden', component: ForbiddenComponent },
+  { path: '', redirectTo: 'home', pathMatch: 'full' }
 ];
 
 @NgModule({
